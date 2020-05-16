@@ -4,6 +4,7 @@ import guru.springframework.command.RecipeCommand;
 import guru.springframework.services.ImageService;
 import guru.springframework.services.RecipeService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ public class ImageController {
     @GetMapping("/recipe/{id}/image")
     public String showUploadForm(Model model, @PathVariable String id){
 
-        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(id));
+        RecipeCommand recipeCommand = recipeService.findCommandById(id);
         model.addAttribute("recipe", recipeCommand);
 
         return "recipe/imageuploadform";
@@ -42,7 +43,7 @@ public class ImageController {
     @PostMapping("/recipe/{id}/image")
     public String imagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file){
 
-        imageService.saveImageFile(Long.valueOf(id), file);
+        imageService.saveImageFile(id, file);
 
         return "redirect:/recipe/" + id + "/show";
     }
@@ -51,7 +52,7 @@ public class ImageController {
     public void renderImageFromDB(@PathVariable String id, HttpServletResponse response) throws IOException {
 
         // get the recipe and the image
-        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(id));
+        RecipeCommand recipeCommand = recipeService.findCommandById(id);
 
         // copy the image from Recipe to byteArray
         if(recipeCommand.getImage()!=null){

@@ -2,6 +2,7 @@ package guru.springframework.controller;
 
 import guru.springframework.models.Recipe;
 import guru.springframework.services.RecipeService;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -57,10 +58,12 @@ public class IndexControllerTest {
     @Test
     public void getIndexPage() {
 
+        String ID = "1";
+
         //given
         Set<Recipe> recipes = new HashSet<>();
         Recipe rec1 = new Recipe();
-        rec1.setId(1L);
+        rec1.setId(ID);
         rec1.setDescription("aaaa");
         recipes.add(rec1);
 

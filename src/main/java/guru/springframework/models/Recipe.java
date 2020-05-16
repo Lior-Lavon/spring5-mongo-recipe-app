@@ -1,21 +1,23 @@
 package guru.springframework.models;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-//@Data
-//@EqualsAndHashCode(exclude = {"categories", "ingredients"})
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Entity
-public class Recipe extends BaseEntity{
+@Document
+public class Recipe{
 
+    @Id
+    private String id;
     private String description;
     private Integer prepTime;
     private Integer cookTime;
@@ -23,35 +25,17 @@ public class Recipe extends BaseEntity{
     private String source;
     private String url;
 
-    @Lob // create a large field , default is 255 char
     private String directions;
-
-    @Enumerated(value = EnumType.STRING) // specify to use the String value of the Enum
     private Difficulty difficulty;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable( name = "recipe_category",
-                joinColumns = @JoinColumn(name = "recipe_id"),
-                inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories = new HashSet<>();
-
-    // Map: One Recipe -> Many Ingredient, While the Recipe owns the Ingredient entity
-    // cascade = CascadeType.ALL , Delete a Recipe will delete all Ingredient
-    // cascade = CascadeType.ALL , Any change to Recipe.ingredients will be saved to ingredients Table
-    // mappedBy = "recipe" The Ingredient entity there will be a Recipe field to rough back to Recipe
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.EAGER)
     private Set<Ingredient> ingredients = new HashSet<>(); // Unique set on Ingredient !!
-
-    @Lob // Large Object, hint JPA to expect big byte[] here
     private Byte[] image;
-
-    // Recipe is owner of Notes, so by deleting Recipe we also delete his Notes
-    // CascadeType.ALL , any update to the Recipe.notes will be persistent to Notes table
-    @OneToOne(cascade = CascadeType.ALL)
     private Notes notes; // 1-1
 
+    @DBRef
+    private Set<Category> categories = new HashSet<>();
+
     public void addIngredient(Ingredient ingredient){
-        ingredient.setRecipe(this);
+        //ingredient.setRecipe(this);
         this.ingredients.add(ingredient);
     }
 
@@ -67,6 +51,4 @@ public class Recipe extends BaseEntity{
     public void setUrl(String url) {
         this.url = url;
     }
-
-
 }

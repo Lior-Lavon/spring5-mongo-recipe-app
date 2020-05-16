@@ -3,6 +3,7 @@ package guru.springframework.Converters;
 import guru.springframework.command.IngredientCommand;
 import guru.springframework.command.UnitOfMeasureCommand;
 import guru.springframework.models.Ingredient;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,9 +14,9 @@ import static org.junit.Assert.*;
 public class IngredientCommandToIngredientTest {
 
     private static String DESCRIPTION = "description";
-    private static Long ID = 1L;
+    private static String ID = "1";
     private static BigDecimal AMOUNT = new BigDecimal(4);
-    private static Long UOM_ID = 2L;
+    private static String UOM_ID = "2";
     private static String UOM_DESCRIPTION = "uom_description";
 
 
@@ -24,6 +25,7 @@ public class IngredientCommandToIngredientTest {
     @Before
     public void setUp() throws Exception {
         ingredientCommandToIngredient = new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
+
     }
 
     @Test

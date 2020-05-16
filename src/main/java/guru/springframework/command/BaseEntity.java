@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BaseEntity {
-    private Long id;
+    private String id;
 }

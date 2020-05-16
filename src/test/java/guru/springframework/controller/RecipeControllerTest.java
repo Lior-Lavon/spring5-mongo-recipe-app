@@ -4,6 +4,7 @@ import guru.springframework.command.RecipeCommand;
 import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.models.Recipe;
 import guru.springframework.services.RecipeService;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -44,10 +45,12 @@ public class RecipeControllerTest {
     @Test
     public void testGetRecipe() throws Exception {
 
-        Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        String ID = "1";
 
-        when(recipeService.findById(anyLong())).thenReturn(recipe);
+        Recipe recipe = new Recipe();
+        recipe.setId(ID);
+
+        when(recipeService.findById(any())).thenReturn(recipe);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/show"))
                 .andExpect(status().isOk())
@@ -59,21 +62,21 @@ public class RecipeControllerTest {
     @Test
     public void testGetRecipeNotFound() throws Exception{
 
-        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+        when(recipeService.findById(any())).thenThrow(NotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/show"))
                 .andExpect(status().isNotFound());
 
     }
 
-    @Test
-    public void testGetRecipeNumberFormatException() throws Exception{
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/recipe/aaa/show"))
-                .andExpect(status().isBadRequest())
-                .andExpect(view().name("400error"));
-
-    }
+//    @Test
+//    public void testGetRecipeNumberFormatException() throws Exception{
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/recipe/aaa/show"))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(view().name("400error"));
+//
+//    }
 
     @Test
     public void testGetNewRecipeForm() throws Exception {
@@ -88,7 +91,7 @@ public class RecipeControllerTest {
     public void testPostNewRecipeForm() throws Exception {
 
         RecipeCommand recipeCommand = new RecipeCommand();
-        recipeCommand.setId(2L);
+        recipeCommand.setId("2");
 
         when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
 
@@ -108,7 +111,7 @@ public class RecipeControllerTest {
     public void testPostNewRecipeFormValidationFail() throws Exception {
 
         RecipeCommand recipeCommand = new RecipeCommand();
-        recipeCommand.setId(2L);
+        recipeCommand.setId("2");
 
         when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommand);
 
@@ -128,9 +131,9 @@ public class RecipeControllerTest {
     public void testGetUpdateView() throws Exception {
 
         RecipeCommand recipeCommand = new RecipeCommand();
-        recipeCommand.setId(1L);
+        recipeCommand.setId("1");
 
-        when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+        when(recipeService.findCommandById(any())).thenReturn(recipeCommand);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/update"))
                 .andExpect(status().isOk())

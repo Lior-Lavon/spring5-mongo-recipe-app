@@ -2,6 +2,7 @@ package guru.springframework.services;
 
 import guru.springframework.models.Recipe;
 import guru.springframework.repositories.RecipeRepository;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
@@ -23,6 +24,9 @@ public class ImageServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    String ID1 = "1";
+    String ID2 = "2";
+
     @Before
     public void setUp() throws Exception {
 
@@ -36,22 +40,20 @@ public class ImageServiceImplTest {
     public void saveImageFile() throws IOException {
 
         //given
-        Long id = 1L;
-
         // mock a file input with MockMultipartFile
         MultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt", "text/plain", "Spring Framework Guru".getBytes());
 
         Recipe recipe = new Recipe();
-        recipe.setId(id);
+        recipe.setId(ID1);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(any())).thenReturn(recipeOptional);
 
         // preper an argument to capture the input value of recipe later below
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
 
         //when
-        imageService.saveImageFile(id, multipartFile);
+        imageService.saveImageFile(ID1, multipartFile);
 
         //then
         verify(recipeRepository, times(1)).save(argumentCaptor.capture());

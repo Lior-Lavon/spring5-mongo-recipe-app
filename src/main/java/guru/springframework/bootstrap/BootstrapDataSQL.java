@@ -36,68 +36,16 @@ public class BootstrapDataSQL implements ApplicationListener<ContextRefreshedEve
 
         loadCategoryData();
         loadMOUData();
-        Optional<Recipe> optionalRecipe = recipeRepository.findByDescription("Perfect Guacamole");
-        if(!optionalRecipe.isPresent())
-            recipeRepository.saveAll(loadData());
+        List<Recipe> recipes = loadData();
+        recipeRepository.saveAll(recipes);
+
         log.debug("loading bootstrap data");
     }
 
-    private void loadCategoryData(){
-        Optional<Category> optionalCategory= categoryRepository.findByDescription("American");
-        if(!optionalCategory.isPresent()){
-            Category categoryAmerican = new Category();
-            categoryAmerican.setDescription("American");
-            categoryRepository.save(categoryAmerican);
-
-            Category categoryItalian = new Category();
-            categoryItalian.setDescription("Italian");
-            categoryRepository.save(categoryItalian);
-
-            Category categoryMexican = new Category();
-            categoryMexican.setDescription("Mexican");
-            categoryRepository.save(categoryMexican);
-
-            Category categoryFastFood = new Category();
-            categoryFastFood.setDescription("Fast Food");
-            categoryRepository.save(categoryFastFood);
-        }
-    }
-
-    private void loadMOUData(){
-
-        Optional<UnitOfMeasure> optionalUnitOfMeasure = unitOfMeasureRepository.findByDescription("Teaspoon");
-        if(!optionalUnitOfMeasure.isPresent()){
-            UnitOfMeasure uomTeaspoon = new UnitOfMeasure();
-            uomTeaspoon.setDescription("Teaspoon");
-            unitOfMeasureRepository.save(uomTeaspoon);
-
-            UnitOfMeasure uomTablespoon = new UnitOfMeasure();
-            uomTablespoon.setDescription("Tablespoon");
-            unitOfMeasureRepository.save(uomTablespoon);
-
-            UnitOfMeasure uomCup = new UnitOfMeasure();
-            uomCup.setDescription("Cup");
-            unitOfMeasureRepository.save(uomCup);
-
-            UnitOfMeasure uomPinch = new UnitOfMeasure();
-            uomPinch.setDescription("Pinch");
-            unitOfMeasureRepository.save(uomPinch);
-
-            UnitOfMeasure uomOunce = new UnitOfMeasure();
-            uomOunce.setDescription("Ounce");
-            unitOfMeasureRepository.save(uomOunce);
-
-            UnitOfMeasure uomClove = new UnitOfMeasure();
-            uomClove.setDescription("Clove");
-            unitOfMeasureRepository.save(uomClove);
-
-            UnitOfMeasure uomPint = new UnitOfMeasure();
-            uomPint.setDescription("Pint");
-            unitOfMeasureRepository.save(uomPint);
-        }
-    }
 
     private List<Recipe> loadData() {
+
+        recipeRepository.deleteAll();
 
         log.debug("loadData - start");
 
@@ -176,7 +124,7 @@ public class BootstrapDataSQL implements ApplicationListener<ContextRefreshedEve
         perfectGuacamole.getCategories().add(italianCategory);
 
         perfectGuacamole.addIngredient(new Ingredient("ripe avocados", BigDecimal.valueOf(2L), tablespoon));
-        perfectGuacamole.addIngredient(new Ingredient("salt", BigDecimal.valueOf(.25), teaspoon));
+        perfectGuacamole.addIngredient(new Ingredient("salt", BigDecimal.valueOf(.25), cup));
         perfectGuacamole.addIngredient(new Ingredient("fresh lime juice", BigDecimal.valueOf(1), tablespoon));
         perfectGuacamole.addIngredient(new Ingredient("minced red onion", BigDecimal.valueOf(2), tablespoon));
         perfectGuacamole.addIngredient(new Ingredient("serrano chiles", BigDecimal.valueOf(2), tablespoon));
@@ -203,5 +151,67 @@ public class BootstrapDataSQL implements ApplicationListener<ContextRefreshedEve
         log.debug("loadData - finish");
         return recipes;
     }
+
+
+    private void loadCategoryData(){
+
+        categoryRepository.deleteAll();
+
+        Optional<Category> optionalCategory= categoryRepository.findByDescription("American");
+        if(!optionalCategory.isPresent()){
+            Category categoryAmerican = new Category();
+            categoryAmerican.setDescription("American");
+            categoryRepository.save(categoryAmerican);
+
+            Category categoryItalian = new Category();
+            categoryItalian.setDescription("Italian");
+            categoryRepository.save(categoryItalian);
+
+            Category categoryMexican = new Category();
+            categoryMexican.setDescription("Mexican");
+            categoryRepository.save(categoryMexican);
+
+            Category categoryFastFood = new Category();
+            categoryFastFood.setDescription("Fast Food");
+            categoryRepository.save(categoryFastFood);
+        }
+    }
+
+    private void loadMOUData(){
+
+        unitOfMeasureRepository.deleteAll();
+
+        Optional<UnitOfMeasure> optionalUnitOfMeasure = unitOfMeasureRepository.findByDescription("Teaspoon");
+        if(!optionalUnitOfMeasure.isPresent()){
+            UnitOfMeasure uomTeaspoon = new UnitOfMeasure();
+            uomTeaspoon.setDescription("Teaspoon");
+            unitOfMeasureRepository.save(uomTeaspoon);
+
+            UnitOfMeasure uomTablespoon = new UnitOfMeasure();
+            uomTablespoon.setDescription("Tablespoon");
+            unitOfMeasureRepository.save(uomTablespoon);
+
+            UnitOfMeasure uomCup = new UnitOfMeasure();
+            uomCup.setDescription("Cup");
+            unitOfMeasureRepository.save(uomCup);
+
+            UnitOfMeasure uomPinch = new UnitOfMeasure();
+            uomPinch.setDescription("Pinch");
+            unitOfMeasureRepository.save(uomPinch);
+
+            UnitOfMeasure uomOunce = new UnitOfMeasure();
+            uomOunce.setDescription("Ounce");
+            unitOfMeasureRepository.save(uomOunce);
+
+            UnitOfMeasure uomClove = new UnitOfMeasure();
+            uomClove.setDescription("Clove");
+            unitOfMeasureRepository.save(uomClove);
+
+            UnitOfMeasure uomPint = new UnitOfMeasure();
+            uomPint.setDescription("Pint");
+            unitOfMeasureRepository.save(uomPint);
+        }
+    }
+
 }
 

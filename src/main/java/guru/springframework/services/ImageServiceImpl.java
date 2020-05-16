@@ -3,6 +3,7 @@ package guru.springframework.services;
 import guru.springframework.models.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +20,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void saveImageFile(Long id, MultipartFile file) {
+    public void saveImageFile(String id, MultipartFile file) {
 
         // save the file image to the DB
         try {

@@ -1,38 +1,39 @@
 package guru.springframework.repositories;
 
+import guru.springframework.bootstrap.BootstrapDataSQL;
 import guru.springframework.models.UnitOfMeasure;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+// Integration tests done with the DB
 // Load Spring Context
 @RunWith(SpringRunner.class)
-
-//DataJpaTest dependencies on
-// maven-failsafe-plugin
-// and {
-//        compile('org.springframework.boot:spring-boot-starter-data-jpa')
-//        compile('org.springframework.boot:spring-boot-starter-web')
-//        runtime('com.h2database:h2')
-//        testCompile('org.springframework.boot:spring-boot-starter-test')
-//        testCompile('org.junit.jupiter:junit-jupiter-engine:5.2.0')
-//        }
-@DataJpaTest
+//@DataJpaTest
+@DataMongoTest
 public class UnitOfMeasureRepositoryIT {
 
     // Spring context will start up and we will get an instance of the UnitOfMeasureRepository injected
     @Autowired
     UnitOfMeasureRepository unitOfMeasureRepository;
+    @Autowired
+    RecipeRepository recipeRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Before
     public void setUp() throws Exception {
+
+        // load the content to the database before the test
+        BootstrapDataSQL bootStrap = new BootstrapDataSQL(recipeRepository, categoryRepository, unitOfMeasureRepository);
+        bootStrap.onApplicationEvent(null);
     }
 
     @Test

@@ -8,7 +8,9 @@ import guru.springframework.models.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -23,9 +25,9 @@ public class RecipeCommandToRecipeTest {
     private static final String GOOGLE_COM = "google.com";
     private static final String DIRECTIONS = "directions";
     private static final Difficulty MODERATE = Difficulty.MODERATE;
-    private static final Long ID_NOTE = 1L;
+    private static final String ID_NOTE = "1";
     private static final String RECIPE_NOTES = "recipe_notes";
-    private static final Long ID = 1L;
+    private static final String ID = "1";
 
     RecipeCommandToRecipe recipeCommandToRecipe;
 
@@ -61,20 +63,20 @@ public class RecipeCommandToRecipeTest {
         recipeCommand.setDirections(DIRECTIONS);
         recipeCommand.setDifficulty(MODERATE);
 
-        Set<CategoryCommand> categoryCommandSet = new HashSet<>();
+        List<CategoryCommand> categoryCommandSet = new ArrayList<>();
         CategoryCommand cc1 = new CategoryCommand();
-        cc1.setId(1L);
+        cc1.setId("1");
         cc1.setDescription("aaaa");
         categoryCommandSet.add(cc1);
 
         CategoryCommand cc2 = new CategoryCommand();
-        cc2.setId(2L);
+        cc2.setId("2");
         cc2.setDescription("bbbb");
         categoryCommandSet.add(cc2);
 
         recipeCommand.setCategories(categoryCommandSet);
 
-        Set<IngredientCommand> ingredientCommandSet = new HashSet<>();
+        List<IngredientCommand> ingredientCommandSet = new ArrayList<>();
         ingredientCommandSet.add(new IngredientCommand());
         recipeCommand.setIngredients(ingredientCommandSet);
 

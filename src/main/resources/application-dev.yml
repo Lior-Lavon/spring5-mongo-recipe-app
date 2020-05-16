@@ -1,28 +1,13 @@
-#Database configuration for MySql Dev
+# Active for Dev
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/sfg_dev
-    username: sfg_dev_user
-    password: password
-    platform: mysql
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    database: mysql
-    show-sql: true
+    platform: mongo
 
-#Generage the schema based on JPA
-#    Configure hibernate to generate the schema for us
-#    in to a file guru_database_create.sql, then copy paste the schema to the MySql DB
-#    properties:
-#      javax:
-#        persistence:
-#          schema-generation:
-#            create-source: metadata
-#            scripts:
-#              action: create
-#              create-target: guru_database_create.sql
+#  jpa:
+#    hibernate:
+#      ddl-auto: validate
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    database: mysql
+#    show-sql: true
 
-#  show-sql: true -> show the sql in the console
 

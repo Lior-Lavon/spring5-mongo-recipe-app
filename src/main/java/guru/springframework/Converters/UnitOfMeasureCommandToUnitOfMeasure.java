@@ -1,5 +1,6 @@
 package guru.springframework.Converters;
 
+import org.bson.types.ObjectId;
 import org.springframework.core.convert.converter.Converter;
 import guru.springframework.command.UnitOfMeasureCommand;
 import guru.springframework.models.UnitOfMeasure;
@@ -19,7 +20,8 @@ public class UnitOfMeasureCommandToUnitOfMeasure implements Converter<UnitOfMeas
         }
 
         final UnitOfMeasure uom = new UnitOfMeasure();
-        uom.setId(source.getId());
+        if(source.getId()!=null && !source.getId().isBlank())
+            uom.setId(source.getId());
         uom.setDescription(source.getDescription());
         return uom;
     }

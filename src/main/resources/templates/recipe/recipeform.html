@@ -144,17 +144,15 @@
                                     <h1 class="panel-title">Ingredients</h1>
                                 </div>
                                 <div class="col-md-1">
-                                    <a class="btn btn-default" href="#" role="button">Edit</a>
+                                    <a class="btn btn-default" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">Edit</a>
                                 </div>
                             </div>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="colmd-12">
-                                    <ul>
-                                        <li>1 Cup of Milk</li>
-                                        <li>1 Reaspoon of Chocolate</li>
-                                        <li>1 Reaspoon of Sugar</li>
+                                    <ul th:each="ingredient : ${ingredients}">
+                                        <li th:text="${ingredient.description}">1 Cup of Milk</li>
                                     </ul>
                                 </div>
                             </div>

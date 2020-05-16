@@ -12,6 +12,7 @@ import guru.springframework.models.UnitOfMeasure;
 import guru.springframework.repositories.IngredientRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -40,6 +41,10 @@ public class IngredientServiceImplTest {
     IngredientCommandToIngredient ingredientCommandToIngredient;
     UnitOfMeasureCommandToUnitOfMeasure unitOfMeasureCommandToUnitOfMeasure;
 
+    String ID1 = "1";
+    String ID2 = "2";
+    String ID3 = "3";
+
     @Before
     public void setUp() throws Exception {
         // add the RecipeRepository
@@ -55,18 +60,18 @@ public class IngredientServiceImplTest {
 
         // given
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        recipe.setId(ID1);
 
         Ingredient ingredient1 = new Ingredient();
-        ingredient1.setId(1L);
+        ingredient1.setId(ID1);
         ingredient1.setDescription("aaaa");
 
         Ingredient ingredient2 = new Ingredient();
-        ingredient2.setId(2L);
+        ingredient2.setId(ID2);
         ingredient2.setDescription("bbbb");
 
         Ingredient ingredient3 = new Ingredient();
-        ingredient3.setId(3L);
+        ingredient3.setId(ID3);
         ingredient3.setDescription("cccc");
 
         recipe.addIngredient(ingredient1);
@@ -74,15 +79,15 @@ public class IngredientServiceImplTest {
         recipe.addIngredient(ingredient3);
 
         // when
-        when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
+        when(recipeRepository.findById(any())).thenReturn(Optional.of(recipe));
 
-        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId(1L, 2L);
+        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId(ID1, ID2);
 
         // then
         assertNotNull(ingredientCommand);
-        assertEquals(Long.valueOf(2L) , ingredientCommand.getId());
-        assertEquals(Long.valueOf(1L) , ingredientCommand.getRecipeId());
-        verify(recipeRepository, times(1)).findById(anyLong());
+        assertEquals("2" , ingredientCommand.getId());
+        //assertEquals("1" , ingredientCommand.getRecipeId());
+        verify(recipeRepository, times(1)).findById(any());
     }
 
     @Test
@@ -90,18 +95,17 @@ public class IngredientServiceImplTest {
 
         // Recipe
         Recipe recipe = new Recipe();
-        recipe.setId(2L);
+        recipe.setId(ID2);
 
         // IngredientCommand
         Ingredient ingredient = new Ingredient();
-        ingredient.setId(3L);
-        ingredient.setRecipe(recipe);
+        ingredient.setId(ID3);
         ingredient.setDescription("description");
         ingredient.setAmount(BigDecimal.valueOf(5L));
 
         // UnitOfMeasure
         UnitOfMeasure unitOfMeasure = new UnitOfMeasure();
-        unitOfMeasure.setId(1L);
+        unitOfMeasure.setId(ID1);
         ingredient.setUom(unitOfMeasure);
 
         recipe.getIngredients().add(ingredient);
@@ -111,15 +115,15 @@ public class IngredientServiceImplTest {
 //        savedRecipe.addIngredient(new Ingredient());
 //        savedRecipe.getIngredients().iterator().next().setId(3L);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
-        when(unitOfMeasureRepository.findById(anyLong())).thenReturn(Optional.of(unitOfMeasure));
+        when(recipeRepository.findById(any())).thenReturn(Optional.of(recipe));
+        when(unitOfMeasureRepository.findById(any())).thenReturn(Optional.of(unitOfMeasure));
         when(recipeRepository.save(any())).thenReturn(recipe);
 
         IngredientCommand savedIngredientCommand = ingredientService.saveIngredientCommand(ingredientToIngredientCommand.convert(ingredient));
 
         assertNotNull(savedIngredientCommand);
-        assertEquals(Long.valueOf(3L), savedIngredientCommand.getId());
-        verify(recipeRepository, times(1)).findById(anyLong());
+        assertEquals(ID3, savedIngredientCommand.getId());
+        verify(recipeRepository, times(1)).findById(any());
         verify(recipeRepository, times(1)).save(any());
 
     }
@@ -129,17 +133,15 @@ public class IngredientServiceImplTest {
 
         // given
         Recipe recipe= new Recipe();
-        recipe.setId(1L);
+        recipe.setId(ID1);
 
         Ingredient ing1 = new Ingredient();
-        ing1.setId(2L);
+        ing1.setId(ID2);
         ing1.setDescription("aaa");
-        ing1.setRecipe(recipe);
 
         Ingredient ing2 = new Ingredient();
-        ing2.setId(3L);
+        ing2.setId(ID3);
         ing2.setDescription("bbb");
-        ing2.setRecipe(recipe);
 
         Set<Ingredient> ingredientSet = new HashSet<>();
         ingredientSet.add(ing1);
@@ -149,16 +151,16 @@ public class IngredientServiceImplTest {
 
         Optional<Recipe> optionalRecipe = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
+        when(recipeRepository.findById(any())).thenReturn(optionalRecipe);
 
-        ingredientService.deleteById(1L, 2L);
+        ingredientService.deleteById(ID1, ID2);
 
-        Optional<Recipe> savedOptionalRecipe = recipeRepository.findById(1L);
+        Optional<Recipe> savedOptionalRecipe = recipeRepository.findById(ID1);
         Recipe savedRecipe = savedOptionalRecipe.get();
 
         assertNotNull(savedRecipe);
         assertEquals(1, savedRecipe.getIngredients().size());
-        verify(recipeRepository, times(2)).findById(anyLong());
+        verify(recipeRepository, times(2)).findById(any());
         verify(recipeRepository, times(1)).save(any());
     }
 }

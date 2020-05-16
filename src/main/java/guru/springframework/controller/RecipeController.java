@@ -1,10 +1,12 @@
 package guru.springframework.controller;
 
+import guru.springframework.command.IngredientCommand;
 import guru.springframework.command.RecipeCommand;
 import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.models.Recipe;
 import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +30,7 @@ public class RecipeController {
     @GetMapping("/recipe/{id}/show")
     public String showById(Model model, @PathVariable String id){
 
-        Recipe recipe = recipeService.findById(Long.valueOf(id));
+        Recipe recipe = recipeService.findById(id);
         model.addAttribute("recipe", recipe);
 
         return "recipe/show";
@@ -38,7 +40,8 @@ public class RecipeController {
     @GetMapping("/recipe/new")
     public String loadNewRecipeForm(Model model){
 
-        model.addAttribute("recipe", new RecipeCommand());
+        RecipeCommand recipeCommand = new RecipeCommand();
+        model.addAttribute("recipe", recipeCommand);
 
         return RECIPE_RECIPEFORM_URL;
     }
@@ -46,7 +49,7 @@ public class RecipeController {
     // load a filed form with recipe
     @GetMapping("/recipe/{id}/update")
     public String loadFiledRecipeFormForUpdate(Model model, @PathVariable String id){
-        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(id));
+        RecipeCommand recipeCommand = recipeService.findCommandById(id);
 
         model.addAttribute("recipe", recipeCommand);
 
@@ -76,7 +79,7 @@ public class RecipeController {
     public String deleteRecipe(@PathVariable String id){
         log.debug("deleteRecipe :" + id);
 
-        recipeService.deleteById(Long.valueOf(id));
+        recipeService.deleteById(id);
         return "redirect:/";
     }
 

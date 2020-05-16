@@ -7,13 +7,12 @@ import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.models.Ingredient;
 import guru.springframework.models.Recipe;
 import guru.springframework.models.UnitOfMeasure;
-import guru.springframework.repositories.IngredientRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -35,7 +34,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
+    public IngredientCommand findByRecipeIdAndIngredientId(String recipeId, String ingredientId) {
 
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
         if(!recipeOptional.isPresent()){
@@ -98,7 +97,6 @@ public class IngredientServiceImpl implements IngredientService {
             } else {
                 // add new
                 Ingredient ingredient = ingredientCommandToIngredient.convert(command);
-                ingredient.setRecipe(recipe);
                 recipe.addIngredient(ingredient);
             }
 
@@ -115,13 +113,14 @@ public class IngredientServiceImpl implements IngredientService {
                 log.error("Ingredient not found for id: " + command.getRecipeId());
                 throw new NotFoundException("Recipe not found");
             } else {
-                return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+                IngredientCommand savedIngredientCommand = ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+                return savedIngredientCommand;
             }
         }
     }
 
     @Override
-    public void deleteById(Long recipeId, Long ingredientId) {
+    public void deleteById(String recipeId, String ingredientId) {
 
         log.debug("delete ingredient :" + ingredientId);
 
@@ -146,7 +145,6 @@ public class IngredientServiceImpl implements IngredientService {
 
         Ingredient ingredient = optionalIngredient.get();
         // set the relationship to null -> this will caouse JPA to delete the ingredient
-        ingredient.setRecipe(null);
 
         recipe.getIngredients().remove(ingredient);
 

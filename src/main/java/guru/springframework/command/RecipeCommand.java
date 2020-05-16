@@ -10,7 +10,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -45,8 +47,8 @@ public class RecipeCommand extends BaseEntity{
     private String directions;
 
     private Difficulty difficulty;
-    private Set<CategoryCommand> categories;
-    private Set<IngredientCommand> ingredients;
+    private List<CategoryCommand> categories = new ArrayList<>();
+    private List<IngredientCommand> ingredients = new ArrayList<>();
     private Byte[] image;
     private NotesCommand notes;
 }

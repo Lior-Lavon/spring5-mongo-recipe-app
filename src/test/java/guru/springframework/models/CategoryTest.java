@@ -1,12 +1,11 @@
 package guru.springframework.models;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public class CategoryTest extends BaseEntity {
+public class CategoryTest {
     Category category;
 
     @Before
@@ -17,7 +16,7 @@ public class CategoryTest extends BaseEntity {
     @Test
     public void testGetId() {
 
-        Long idValue = 4L;
+        String idValue = "4";
 
         category.setId(idValue);
 

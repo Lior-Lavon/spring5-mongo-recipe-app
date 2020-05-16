@@ -8,6 +8,7 @@ import guru.springframework.command.RecipeCommand;
 import guru.springframework.models.Difficulty;
 import guru.springframework.models.Recipe;
 import lombok.Synchronized;
+import org.bson.types.ObjectId;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,8 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
             return null;
 
         final Recipe recipe = new Recipe();
-        recipe.setId(source.getId());
+        if(source.getId()!=null && !source.getId().isBlank())
+            recipe.setId(source.getId());
         recipe.setDescription(source.getDescription());
         recipe.setPrepTime(source.getPrepTime());
         recipe.setCookTime(source.getCookTime());

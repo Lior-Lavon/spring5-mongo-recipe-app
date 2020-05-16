@@ -1,19 +1,20 @@
 package guru.springframework.models;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = {"recipes"})
-//@EqualsAndHashCode(callSuper = false)
-@Entity
-public class Category extends BaseEntity{
+@Document
+public class Category{
 
+    @Id
+    private String id;
     private String description;
-
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER) // mappedBy = "categories" , the name of the attribute in Recipe
     private Set<Recipe> recipes;
 
 }

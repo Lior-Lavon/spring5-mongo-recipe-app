@@ -4,6 +4,7 @@ import guru.springframework.Converters.UnitOfMeasureToUnitOfMeasureCommand;
 import guru.springframework.command.UnitOfMeasureCommand;
 import guru.springframework.models.UnitOfMeasure;
 import guru.springframework.repositories.UnitOfMeasureRepository;
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -32,21 +33,25 @@ public class UnitOfMeasureServiceImplTest {
         unitOfMeasureService = new UnitOfMeasureServiceImpl(unitOfMeasureRepository, new UnitOfMeasureToUnitOfMeasureCommand());
     }
 
+    String ID1 = "1";
+    String ID2 = "2";
+    String ID3 = "3";
+
     @Test
     public void listAllUOM() {
 
         // given
         Set<UnitOfMeasure> unitOfMeasureSet = new HashSet<>();
         UnitOfMeasure unitOfMeasure1 = new UnitOfMeasure();
-        unitOfMeasure1.setId(1L);
+        unitOfMeasure1.setId(ID1);
         unitOfMeasure1.setDescription("aaa");
 
         UnitOfMeasure unitOfMeasure2 = new UnitOfMeasure();
-        unitOfMeasure2.setId(3L);
+        unitOfMeasure2.setId(ID3);
         unitOfMeasure2.setDescription("bbb");
 
         UnitOfMeasure unitOfMeasure3 = new UnitOfMeasure();
-        unitOfMeasure3.setId(3L);
+        unitOfMeasure3.setId(ID3);
         unitOfMeasure3.setDescription("ccc");
 
         unitOfMeasureSet.add(unitOfMeasure1);

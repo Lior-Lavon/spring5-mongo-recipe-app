@@ -3,15 +3,19 @@ package guru.springframework.Converters;
 
 import guru.springframework.command.CategoryCommand;
 import guru.springframework.command.IngredientCommand;
+import guru.springframework.command.NotesCommand;
 import guru.springframework.command.RecipeCommand;
 import guru.springframework.models.Category;
+import guru.springframework.models.Notes;
 import guru.springframework.models.Recipe;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -45,12 +49,15 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
         recipeCommand.setDirections(source.getDirections());
         recipeCommand.setDifficulty(source.getDifficulty());
         recipeCommand.setImage(source.getImage());
-        recipeCommand.setNotes(notesToNotesCommand.convert(source.getNotes()));
 
-        Set<CategoryCommand> categoryCommandSet = new HashSet<>();
+        Notes note = source.getNotes();
+        NotesCommand notesCommand = notesToNotesCommand.convert(note);
+        recipeCommand.setNotes(notesCommand);
+
+        List<CategoryCommand> categoryCommandSet = new ArrayList<>();
         recipeCommand.setCategories(categoryCommandSet);;
 
-        Set<IngredientCommand> ingredientCommandSet = new HashSet<>();
+        List<IngredientCommand> ingredientCommandSet = new ArrayList<>();
         recipeCommand.setIngredients(ingredientCommandSet);;
 
         if(source.getCategories() != null && source.getCategories().size() > 0){

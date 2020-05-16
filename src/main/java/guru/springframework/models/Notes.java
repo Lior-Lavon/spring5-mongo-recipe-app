@@ -1,22 +1,23 @@
 package guru.springframework.models;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
+import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 //@EqualsAndHashCode(exclude = {"recipe"})
 @EqualsAndHashCode(callSuper = false)
-@Entity
-public class Notes extends BaseEntity{
+public class Notes{
 
-    @OneToOne // leave empty so the Recipe entity will own this object
+    // setting the id value for every new note
+    private String id = UUID.randomUUID().toString();
     private Recipe recipe; // 1-1
 
-    @Lob // Large Object, hint JPA to expect lots of data in this filed
     private String recipeNotes;
 
 }

@@ -16,5 +16,5 @@ public class IngredientCommand extends BaseEntity{
     private UnitOfMeasureCommand uom;
 
     // hidden property to reference the recipe
-    private Long recipeId;
+    private String recipeId;
 }
